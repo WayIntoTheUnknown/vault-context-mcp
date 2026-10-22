@@ -35,9 +35,13 @@ pip install git+https://github.com/WayIntoTheUnknown/vault-context-mcp
 git clone https://github.com/WayIntoTheUnknown/vault-context-mcp
 cd vault-context-mcp
 python -m venv .venv
-.venv\Scripts\pip install -e .        # Windows
-# .venv/bin/pip install -e .          # Linux/macOS
+.venv\Scripts\pip install .           # Windows
+# .venv/bin/pip install .             # Linux/macOS
 ```
+
+Если путь к репозиторию содержит не-ASCII символы (например, `C:\Users\...\Новая папка\...`),
+ставь пакет без `-e`: editable-установка ломается на `.pth`-файле в cp1251. Для разработки
+используй `scripts/dev-reinstall.ps1` (переустановка + тесты).
 
 ## Быстрый старт
 
@@ -85,6 +89,8 @@ vault-ctx decisions add "Перешли на SQLite-адаптер" --tag archit
 Инструменты: `ctx_sync`, `ctx_sync_all`, `ctx_digest`, `ctx_get_context`, `ctx_append_decision`,
 `ctx_search`, `ctx_status`. Ресурсы: `ctx://context`, `ctx://decisions`, `ctx://status`,
 `ctx://session/{id}`. Промпт: `handoff`.
+
+После правки конфига перезапусти opencode: MCP-серверы и плагины загружаются при старте.
 
 ## Подключение к другим клиентам
 
