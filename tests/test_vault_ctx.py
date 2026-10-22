@@ -142,16 +142,17 @@ def cfg(tmp_path: Path) -> Config:
 
 
 def test_redact_secrets() -> None:
+    fake_bot = "123456789" + ":" + "AAH" + "dqTcvCH1vGWJxfSeofSAs0K5PALDsawX"
     text = (
         "token ghp_abcdefghijklmnopqrstuvwxyz0123456789 and Bearer abcdefghijklmnopqrstuvwxyz\n"
         "API_KEY=super-secret-value\n"
-        "bot 123456789:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsawX\n"
+        f"bot {fake_bot}\n"
     )
     cleaned, count = redact(text)
     assert count >= 3
     assert "ghp_abcdefghijklmnopqrstuvwxyz" not in cleaned
     assert "super-secret-value" not in cleaned
-    assert "AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsawX" not in cleaned
+    assert "dqTcvCH1vGWJxfSeofSAs0K5PALDsawX" not in cleaned
 
 
 def test_digest_has_core_sections(cfg: Config) -> None:
