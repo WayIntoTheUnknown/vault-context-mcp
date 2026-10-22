@@ -83,13 +83,18 @@ export const VaultContextPlugin: Plugin = async () => {
       if (disabled) return
       const payload = event as unknown as {
         type?: string
-        properties?: { sessionID?: string }
+        properties?: { sessionID?: string; info?: { role?: string; time?: { completed?: number } } }
         data?: { sessionID?: string }
       }
-      if (payload.type !== "session.idle") return
       const sessionID = payload.properties?.sessionID ?? payload.data?.sessionID
       if (!sessionID) return
-      schedule(sessionID)
+      const assistantFinished =
+        payload.type === "message.updated" &&
+        payload.properties?.info?.role === "assistant" &&
+        Boolean(payload.properties?.info?.time?.completed)
+      if (payload.type === "session.idle" || assistantFinished) {
+        schedule(sessionID)
+      }
     },
   }
 }

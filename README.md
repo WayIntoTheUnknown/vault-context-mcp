@@ -113,7 +113,8 @@ Cursor, Cline, Zed и любой MCP-клиент — тот же stdio-кома
 ## Авто-экспорт в opencode
 
 Скопируй `plugin/opencode-vault-context.ts` в `~/.config/opencode/plugins/` (или
-`.opencode/plugins/` проекта). Плагин слушает `session.idle`, делает debounce 3 с и вызывает
+`.opencode/plugins/` проекта). Плагин слушает `session.idle` и завершённые сообщения ассистента
+(`message.updated` с `time.completed`), делает debounce 3 с и вызывает
 `vault-ctx export --session <id> --quiet`. Ошибки пишутся в
 `%LOCALAPPDATA%\vault-ctx\vault-ctx.log` и не влияют на агента.
 
